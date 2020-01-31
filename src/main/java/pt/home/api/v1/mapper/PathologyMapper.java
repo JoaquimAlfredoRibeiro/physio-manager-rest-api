@@ -10,7 +10,7 @@ public interface PathologyMapper {
 
     PathologyMapper INSTANCE = Mappers.getMapper(PathologyMapper.class);
 
-    PathologyDTO pathologyToPathologyDTO(Pathology customer);
+    PathologyDTO pathologyToPathologyDTO(Pathology patient);
 
     Pathology pathologyDTOToPathology(PathologyDTO consultationDTO);
 }

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pt.home.domain.Customer;
+import pt.home.domain.Patient;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +21,6 @@ public class ConsultationDTO {
     private String description;
 
     @JsonIgnore
-    private Customer customer;
+    private Patient patient;
 }
 

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import pt.home.api.v1.mapper.ConsultationMapper;
 import pt.home.api.v1.model.ConsultationDTO;
 import pt.home.domain.Consultation;
-import pt.home.domain.Customer;
+import pt.home.domain.Patient;
 
 import java.time.LocalDateTime;
 
@@ -24,8 +24,8 @@ public class ConsultationMapperTest {
         //given
         Consultation consultation = Consultation.builder().dateTime(DATE_TIME).description(DESCRIPTION).build();
 
-        Customer customer = Customer.builder().id(1L).fullName("John Doe").build();
-        consultation.setCustomer(customer);
+        Patient patient = Patient.builder().id(1L).fullName("John Doe").build();
+        consultation.setPatient(patient);
 
         //when
         ConsultationDTO consultationDTO = consultationMapper.consultationToConsultationDTO(consultation);
@@ -33,7 +33,7 @@ public class ConsultationMapperTest {
         //then
         assertEquals(DATE_TIME, consultationDTO.getDateTime());
         assertEquals(DESCRIPTION, consultationDTO.getDescription());
-        assertEquals(customer, consultationDTO.getCustomer());
+        assertEquals(patient, consultationDTO.getPatient());
     }
 
     @Test
@@ -42,8 +42,8 @@ public class ConsultationMapperTest {
         //given
         ConsultationDTO consultationDTO = ConsultationDTO.builder().dateTime(DATE_TIME).description(DESCRIPTION).build();
 
-        Customer customer = Customer.builder().id(1L).fullName("John Doe").build();
-        consultationDTO.setCustomer(customer);
+        Patient patient = Patient.builder().id(1L).fullName("John Doe").build();
+        consultationDTO.setPatient(patient);
 
         //when
         Consultation consultation = consultationMapper.consultationDTOToConsultation(consultationDTO);
@@ -51,6 +51,6 @@ public class ConsultationMapperTest {
         //then
         assertEquals(DATE_TIME, consultation.getDateTime());
         assertEquals(DESCRIPTION, consultation.getDescription());
-        assertEquals(customer, consultation.getCustomer());
+        assertEquals(patient, consultation.getPatient());
     }
 }

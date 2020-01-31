@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerDTO {
+public class PatientDTO {
     public Long id;
 
     private String fullName;
@@ -26,6 +26,6 @@ public class CustomerDTO {
     @JsonIgnore
     private Set<ConsultationDTO> consultations;
 
-    @JsonProperty("customer_url")
-    private String customerUrl;
+    @JsonProperty("patient_url")
+    private String patientUrl;
 }

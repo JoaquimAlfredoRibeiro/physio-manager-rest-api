@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"pathologies", "consultations"})
-public class Customer {
+public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +24,9 @@ public class Customer {
     private String address;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "customer_pathologies", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "pathology_id"))
+    @JoinTable(name = "patient_pathologies", joinColumns = @JoinColumn(name = "patient_id"), inverseJoinColumns = @JoinColumn(name = "pathology_id"))
     private Set<Pathology> pathologies = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "patient")
     private Set<Consultation> consultations = new HashSet<>();
 }

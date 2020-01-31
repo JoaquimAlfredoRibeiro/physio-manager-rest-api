@@ -9,10 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pt.home.api.v1.model.ConsultationDTO;
-import pt.home.api.v1.model.CustomerDTO;
 import pt.home.api.v1.model.PathologyDTO;
-import pt.home.controllers.v1.CustomerController;
-import pt.home.services.CustomerService;
+import pt.home.api.v1.model.PatientDTO;
+import pt.home.controllers.v1.PatientController;
+import pt.home.services.PatientService;
 import pt.home.services.ResourceNotFoundException;
 
 import java.time.LocalDateTime;
@@ -31,13 +31,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pt.home.controllers.AbstractRestControllerTest.asJsonString;
 
-public class CustomerControllerTest {
+public class PatientControllerTest {
 
     @Mock
-    CustomerService customerService;
+    PatientService patientService;
 
     @InjectMocks
-    CustomerController customerController;
+    PatientController patientController;
 
     MockMvc mockMvc;
 
@@ -45,97 +45,97 @@ public class CustomerControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
+        mockMvc = MockMvcBuilders.standaloneSetup(patientController)
                 .setControllerAdvice(new RestResponseEntityExceptionHandler())
                 .build();
     }
 
     @Test
-    public void testGetAllCustomers() throws Exception {
+    public void testGetAllPatients() throws Exception {
 
         //given
-        CustomerDTO customer1 = CustomerDTO.builder().fullName("John Doe").customerUrl(CustomerController.BASE_URL + "/1").build();
-        CustomerDTO customer2 = CustomerDTO.builder().fullName("Jane Buck").customerUrl(CustomerController.BASE_URL + "/2").build();
+        PatientDTO patient1 = PatientDTO.builder().fullName("John Doe").patientUrl(PatientController.BASE_URL + "/1").build();
+        PatientDTO patient2 = PatientDTO.builder().fullName("Jane Buck").patientUrl(PatientController.BASE_URL + "/2").build();
 
-        when(customerService.getAllCustomers()).thenReturn(Arrays.asList(customer1, customer2));
+        when(patientService.getAllPatients()).thenReturn(Arrays.asList(patient1, patient2));
 
-        mockMvc.perform(get(CustomerController.BASE_URL)
+        mockMvc.perform(get(PatientController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customers", hasSize(2)));
+                .andExpect(jsonPath("$.patients", hasSize(2)));
     }
 
     @Test
-    public void testGetCustomerById() throws Exception {
+    public void testGetPatientById() throws Exception {
 
         //given
-        CustomerDTO customer1 = CustomerDTO.builder().fullName("John Doe").customerUrl(CustomerController.BASE_URL + "/1").build();
+        PatientDTO patient1 = PatientDTO.builder().fullName("John Doe").patientUrl(PatientController.BASE_URL + "/1").build();
 
-        when(customerService.getCustomerById(anyLong())).thenReturn(customer1);
+        when(patientService.getPatientById(anyLong())).thenReturn(patient1);
 
         //then
-        mockMvc.perform(get(CustomerController.BASE_URL + "/1")
+        mockMvc.perform(get(PatientController.BASE_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.fullName", equalTo("John Doe")));
     }
 
     @Test
-    public void testCreateNewCustomer() throws Exception {
+    public void testCreateNewPatient() throws Exception {
         //given
-        CustomerDTO customer = CustomerDTO.builder().fullName("John Doe").build();
-        CustomerDTO returnDTO = CustomerDTO.builder().fullName(customer.getFullName()).customerUrl(CustomerController.BASE_URL + "/1").build();
+        PatientDTO patient = PatientDTO.builder().fullName("John Doe").build();
+        PatientDTO returnDTO = PatientDTO.builder().fullName(patient.getFullName()).patientUrl(PatientController.BASE_URL + "/1").build();
 
-        when(customerService.createNewCustomer(customer)).thenReturn(returnDTO);
+        when(patientService.createNewPatient(patient)).thenReturn(returnDTO);
 
         //then
-        mockMvc.perform(post(CustomerController.BASE_URL)
+        mockMvc.perform(post(PatientController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customer)))
+                .content(asJsonString(patient)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.fullName", equalTo("John Doe")))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASE_URL + "/1")));
+                .andExpect(jsonPath("$.patient_url", equalTo(PatientController.BASE_URL + "/1")));
     }
 
     @Test
-    public void testUpdateCustomer() throws Exception {
+    public void testUpdatePatient() throws Exception {
         //given
-        CustomerDTO customer = CustomerDTO.builder().fullName("John Doe").build();
-        CustomerDTO returnDTO = CustomerDTO.builder().fullName(customer.getFullName()).customerUrl(CustomerController.BASE_URL + "/1").build();
+        PatientDTO patient = PatientDTO.builder().fullName("John Doe").build();
+        PatientDTO returnDTO = PatientDTO.builder().fullName(patient.getFullName()).patientUrl(PatientController.BASE_URL + "/1").build();
 
-        when(customerService.saveCustomerByDTO(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
+        when(patientService.savePatientByDTO(anyLong(), any(PatientDTO.class))).thenReturn(returnDTO);
 
         //when/then
-        mockMvc.perform(put(CustomerController.BASE_URL + "/1")
+        mockMvc.perform(put(PatientController.BASE_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customer)))
+                .content(asJsonString(patient)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.fullName", equalTo("John Doe")))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASE_URL + "/1")));
+                .andExpect(jsonPath("$.patient_url", equalTo(PatientController.BASE_URL + "/1")));
     }
 
     @Test
-    public void testDeleteCustomer() throws Exception {
+    public void testDeletePatient() throws Exception {
 
-        mockMvc.perform(delete(CustomerController.BASE_URL + "/1")
+        mockMvc.perform(delete(PatientController.BASE_URL + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(customerService).deleteCustomerById(anyLong());
+        verify(patientService).deletePatientById(anyLong());
     }
 
     @Test
     public void testNotFoundException() throws Exception {
 
-        when(customerService.getCustomerById(anyLong())).thenThrow(ResourceNotFoundException.class);
+        when(patientService.getPatientById(anyLong())).thenThrow(ResourceNotFoundException.class);
 
-        mockMvc.perform(get(CustomerController.BASE_URL + "/111")
+        mockMvc.perform(get(PatientController.BASE_URL + "/111")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void testGetConsultationsByCustomerId() throws Exception {
+    public void testGetConsultationsByPatientId() throws Exception {
 
         Set<ConsultationDTO> consultation = new HashSet<>();
         consultation.add(ConsultationDTO.builder()
@@ -150,22 +150,22 @@ public class CustomerControllerTest {
                 .build());
 
         //given
-        CustomerDTO customer1 = CustomerDTO.builder()
+        PatientDTO patient1 = PatientDTO.builder()
                 .fullName("John Doe")
-                .customerUrl(CustomerController.BASE_URL + "/1")
+                .patientUrl(PatientController.BASE_URL + "/1")
                 .consultations(consultation).build();
 
-        when(customerService.getCustomerById(anyLong())).thenReturn(customer1);
+        when(patientService.getPatientById(anyLong())).thenReturn(patient1);
 
         //then
-        mockMvc.perform(get(CustomerController.BASE_URL + "/1/consultations")
+        mockMvc.perform(get(PatientController.BASE_URL + "/1/consultations")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.consultations", hasSize(2)));
     }
 
     @Test
-    public void testGetPathologiesByCustomerId() throws Exception {
+    public void testGetPathologiesByPatientId() throws Exception {
 
         Set<PathologyDTO> pathologyDTOs = new HashSet<>();
         pathologyDTOs.add(PathologyDTO.builder()
@@ -180,15 +180,15 @@ public class CustomerControllerTest {
                 .build());
 
         //given
-        CustomerDTO customer1 = CustomerDTO.builder()
+        PatientDTO patient1 = PatientDTO.builder()
                 .fullName("John Doe")
-                .customerUrl(CustomerController.BASE_URL + "/1")
+                .patientUrl(PatientController.BASE_URL + "/1")
                 .pathologies(pathologyDTOs).build();
 
-        when(customerService.getCustomerById(anyLong())).thenReturn(customer1);
+        when(patientService.getPatientById(anyLong())).thenReturn(patient1);
 
         //then
-        mockMvc.perform(get(CustomerController.BASE_URL + "/1/pathologies")
+        mockMvc.perform(get(PatientController.BASE_URL + "/1/pathologies")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pathologies", hasSize(2)));

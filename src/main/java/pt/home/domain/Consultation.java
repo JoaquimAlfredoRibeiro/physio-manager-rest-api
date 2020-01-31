@@ -23,6 +23,6 @@ public class Consultation {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
 }

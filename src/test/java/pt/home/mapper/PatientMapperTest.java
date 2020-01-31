@@ -1,13 +1,13 @@
 package pt.home.mapper;
 
 import org.junit.jupiter.api.Test;
-import pt.home.api.v1.mapper.CustomerMapper;
+import pt.home.api.v1.mapper.PatientMapper;
 import pt.home.api.v1.model.ConsultationDTO;
-import pt.home.api.v1.model.CustomerDTO;
 import pt.home.api.v1.model.PathologyDTO;
+import pt.home.api.v1.model.PatientDTO;
 import pt.home.domain.Consultation;
-import pt.home.domain.Customer;
 import pt.home.domain.Pathology;
+import pt.home.domain.Patient;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CustomerMapperTest {
+public class PatientMapperTest {
 
     //Constants
     public static final String FULLNAME = "John Doe";
@@ -41,65 +41,65 @@ public class CustomerMapperTest {
     ConsultationDTO consultation1DTO = ConsultationDTO.builder().dateTime(DATE_TIME_1).description("Consultation 1").build();
     ConsultationDTO consultation2DTO = ConsultationDTO.builder().dateTime(DATE_TIME_2).description("Consultation 2").build();
 
-    CustomerMapper customerMapper = CustomerMapper.INSTANCE;
+    PatientMapper patientMapper = PatientMapper.INSTANCE;
 
     @Test
-    public void customerToCustomerDTO() {
+    public void patientToPatientDTO() {
 
         //given
-        Customer customer = Customer.builder().fullName(FULLNAME).phoneNumber(PHONE_NUMBER).email(EMAIL).address(ADDRESS).build();
+        Patient patient = Patient.builder().fullName(FULLNAME).phoneNumber(PHONE_NUMBER).email(EMAIL).address(ADDRESS).build();
 
         Set<Pathology> pathologies = new HashSet<>();
         pathologies.add(pathology1);
         pathologies.add(pathology2);
 
-        customer.setPathologies(pathologies);
+        patient.setPathologies(pathologies);
 
         Set<Consultation> consultations = new HashSet<>();
         consultations.add(consultation1);
         consultations.add(consultation2);
 
-        customer.setConsultations(consultations);
+        patient.setConsultations(consultations);
 
         //when
-        CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
+        PatientDTO patientDTO = patientMapper.patientToPatientDTO(patient);
 
         //then
-        assertEquals(FULLNAME, customerDTO.getFullName());
-        assertEquals(PHONE_NUMBER, customerDTO.getPhoneNumber());
-        assertEquals(EMAIL, customerDTO.getEmail());
-        assertEquals(ADDRESS, customerDTO.getAddress());
-        assertEquals(pathologies.stream().findFirst().get().getId(), customerDTO.getPathologies().stream().findFirst().get().getId());
-        assertEquals(consultations.stream().findFirst().get().getId(), customerDTO.getConsultations().stream().findFirst().get().getId());
+        assertEquals(FULLNAME, patientDTO.getFullName());
+        assertEquals(PHONE_NUMBER, patientDTO.getPhoneNumber());
+        assertEquals(EMAIL, patientDTO.getEmail());
+        assertEquals(ADDRESS, patientDTO.getAddress());
+        assertEquals(pathologies.stream().findFirst().get().getId(), patientDTO.getPathologies().stream().findFirst().get().getId());
+        assertEquals(consultations.stream().findFirst().get().getId(), patientDTO.getConsultations().stream().findFirst().get().getId());
     }
 
     @Test
-    public void customerDTOToCustomer() {
+    public void patientDTOToPatient() {
 
         //given
-        CustomerDTO customerDTO = CustomerDTO.builder().fullName(FULLNAME).phoneNumber(PHONE_NUMBER).email(EMAIL).address(ADDRESS).build();
+        PatientDTO patientDTO = PatientDTO.builder().fullName(FULLNAME).phoneNumber(PHONE_NUMBER).email(EMAIL).address(ADDRESS).build();
 
         Set<PathologyDTO> pathologies = new HashSet<>();
         pathologies.add(pathology1DTO);
         pathologies.add(pathology2DTO);
 
-        customerDTO.setPathologies(pathologies);
+        patientDTO.setPathologies(pathologies);
 
         Set<ConsultationDTO> consultations = new HashSet<>();
         consultations.add(consultation1DTO);
         consultations.add(consultation2DTO);
 
-        customerDTO.setConsultations(consultations);
+        patientDTO.setConsultations(consultations);
 
         //when
-        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
+        Patient patient = patientMapper.patientDTOToPatient(patientDTO);
 
         //then
-        assertEquals(FULLNAME, customer.getFullName());
-        assertEquals(PHONE_NUMBER, customer.getPhoneNumber());
-        assertEquals(EMAIL, customer.getEmail());
-        assertEquals(ADDRESS, customer.getAddress());
-        assertEquals(pathologies.stream().findFirst().get().getId(), customer.getPathologies().stream().findFirst().get().getId());
-        assertEquals(consultations.stream().findFirst().get().getId(), customer.getConsultations().stream().findFirst().get().getId());
+        assertEquals(FULLNAME, patient.getFullName());
+        assertEquals(PHONE_NUMBER, patient.getPhoneNumber());
+        assertEquals(EMAIL, patient.getEmail());
+        assertEquals(ADDRESS, patient.getAddress());
+        assertEquals(pathologies.stream().findFirst().get().getId(), patient.getPathologies().stream().findFirst().get().getId());
+        assertEquals(consultations.stream().findFirst().get().getId(), patient.getConsultations().stream().findFirst().get().getId());
     }
 }
