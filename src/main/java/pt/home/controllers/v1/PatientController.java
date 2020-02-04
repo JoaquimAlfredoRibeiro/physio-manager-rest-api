@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping(PatientController.BASE_URL)
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class PatientController {
 
     public static final String BASE_URL = "/api/v1/patients";

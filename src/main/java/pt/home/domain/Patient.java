@@ -1,6 +1,7 @@
 package pt.home.domain;
 
 import lombok.*;
+import pt.home.domain.audit.UserDateAudit;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"pathologies", "consultations"})
-public class Patient {
+public class Patient extends UserDateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
