@@ -33,7 +33,6 @@ public class User {
     @Size(max = 40)
     private String lastName;
 
-    @NotBlank
     @Size(max = 15)
     private String username;
 
