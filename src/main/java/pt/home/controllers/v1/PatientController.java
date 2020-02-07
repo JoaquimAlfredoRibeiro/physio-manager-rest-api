@@ -6,6 +6,8 @@ import pt.home.api.v1.model.ConsultationListDTO;
 import pt.home.api.v1.model.PathologyListDTO;
 import pt.home.api.v1.model.PatientDTO;
 import pt.home.api.v1.model.PatientListDTO;
+import pt.home.security.CurrentUser;
+import pt.home.security.UserPrincipal;
 import pt.home.services.PatientService;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class PatientController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PatientListDTO getAllPatients() {
+    public PatientListDTO getAllPatients(@CurrentUser UserPrincipal currentUser) {
         return new PatientListDTO(patientService.getAllPatients());
     }
 
