@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
@@ -16,9 +19,17 @@ import java.util.Set;
 public class PatientDTO {
     public Long id;
 
+    @NotBlank
+    @Size(min = 6, max = 120)
     private String fullName;
-    private Long phoneNumber;
+
+    @NotBlank
+    private String phoneNumber;
+
+    @NotBlank
+    @Email
     private String email;
+
     private String address;
 
     @JsonIgnore

@@ -1,15 +1,19 @@
 package pt.home.controllers.v1;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.home.api.v1.model.ConsultationListDTO;
 import pt.home.api.v1.model.PathologyListDTO;
 import pt.home.api.v1.model.PatientDTO;
 import pt.home.api.v1.model.PatientListDTO;
+import pt.home.payload.ApiResponse;
+import pt.home.repositories.PatientRepository;
 import pt.home.security.CurrentUser;
 import pt.home.security.UserPrincipal;
 import pt.home.services.PatientService;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 
 @RestController
@@ -19,9 +23,12 @@ public class PatientController {
 
     public static final String BASE_URL = "/api/v1/patients";
 
+    private final PatientRepository patientRepository;
+
     private final PatientService patientService;
 
-    public PatientController(PatientService patientService) {
+    public PatientController(PatientRepository patientRepository, PatientService patientService) {
+        this.patientRepository = patientRepository;
         this.patientService = patientService;
     }
 
@@ -39,8 +46,15 @@ public class PatientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PatientDTO createNewPatient(@RequestBody PatientDTO patientDTO) {
-        return patientService.createNewPatient(patientDTO);
+    public ResponseEntity<?> createNewPatient(@Valid @RequestBody PatientDTO patientDTO) {
+
+        if (patientRepository.existsByEmail(patientDTO.getEmail())) {
+            return new ResponseEntity(new ApiResponse(false, "Email Address already in use."),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity(patientService.createNewPatient(patientDTO),
+                HttpStatus.CREATED);
     }
 
     @PutMapping({"/{id}"})

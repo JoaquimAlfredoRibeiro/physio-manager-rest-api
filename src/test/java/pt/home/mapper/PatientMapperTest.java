@@ -21,7 +21,8 @@ public class PatientMapperTest {
     public static final String FULLNAME = "John Doe";
     public static final String EMAIL = "johndoe@mybiz.net";
     public static final String ADDRESS = "Main Street, 34, Washington";
-    public static final Long PHONE_NUMBER = new Long(123456789);
+    public static final Long PHONE_NUMBER_LONG = new Long(123456789);
+    public static final String PHONE_NUMBER_STRING = "123456789";
     public static final LocalDateTime DATE_TIME_1 = LocalDateTime.of(2019, 11, 11, 10, 30);
     public static final LocalDateTime DATE_TIME_2 = LocalDateTime.of(2019, 12, 12, 12, 00);
 
@@ -47,7 +48,7 @@ public class PatientMapperTest {
     public void patientToPatientDTO() {
 
         //given
-        Patient patient = Patient.builder().fullName(FULLNAME).phoneNumber(PHONE_NUMBER).email(EMAIL).address(ADDRESS).build();
+        Patient patient = Patient.builder().fullName(FULLNAME).phoneNumber(PHONE_NUMBER_LONG).email(EMAIL).address(ADDRESS).build();
 
         Set<Pathology> pathologies = new HashSet<>();
         pathologies.add(pathology1);
@@ -66,7 +67,7 @@ public class PatientMapperTest {
 
         //then
         assertEquals(FULLNAME, patientDTO.getFullName());
-        assertEquals(PHONE_NUMBER, patientDTO.getPhoneNumber());
+        assertEquals(PHONE_NUMBER_STRING, patientDTO.getPhoneNumber());
         assertEquals(EMAIL, patientDTO.getEmail());
         assertEquals(ADDRESS, patientDTO.getAddress());
         assertEquals(pathologies.stream().findFirst().get().getId(), patientDTO.getPathologies().stream().findFirst().get().getId());
@@ -77,7 +78,7 @@ public class PatientMapperTest {
     public void patientDTOToPatient() {
 
         //given
-        PatientDTO patientDTO = PatientDTO.builder().fullName(FULLNAME).phoneNumber(PHONE_NUMBER).email(EMAIL).address(ADDRESS).build();
+        PatientDTO patientDTO = PatientDTO.builder().fullName(FULLNAME).phoneNumber(PHONE_NUMBER_STRING).email(EMAIL).address(ADDRESS).build();
 
         Set<PathologyDTO> pathologies = new HashSet<>();
         pathologies.add(pathology1DTO);
@@ -96,7 +97,7 @@ public class PatientMapperTest {
 
         //then
         assertEquals(FULLNAME, patient.getFullName());
-        assertEquals(PHONE_NUMBER, patient.getPhoneNumber());
+        assertEquals(PHONE_NUMBER_LONG, patient.getPhoneNumber());
         assertEquals(EMAIL, patient.getEmail());
         assertEquals(ADDRESS, patient.getAddress());
         assertEquals(pathologies.stream().findFirst().get().getId(), patient.getPathologies().stream().findFirst().get().getId());
