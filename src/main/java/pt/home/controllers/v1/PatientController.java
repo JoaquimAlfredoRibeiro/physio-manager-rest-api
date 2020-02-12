@@ -35,7 +35,7 @@ public class PatientController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PatientListDTO getAllPatients(@CurrentUser UserPrincipal currentUser) {
-        return new PatientListDTO(patientService.getAllPatients());
+        return new PatientListDTO(patientService.getAllPatients(currentUser.getId()));
     }
 
     @GetMapping({"/{id}"})
@@ -59,7 +59,7 @@ public class PatientController {
 
     @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public PatientDTO updatePatient(@PathVariable Long id, @RequestBody PatientDTO patientDTO) {
+    public PatientDTO updatePatient(@PathVariable Long id, @Valid @RequestBody PatientDTO patientDTO) {
         return patientService.savePatientByDTO(id, patientDTO);
     }
 

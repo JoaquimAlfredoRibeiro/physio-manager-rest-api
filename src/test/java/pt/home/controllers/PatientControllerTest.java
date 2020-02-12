@@ -12,6 +12,7 @@ import pt.home.api.v1.model.ConsultationDTO;
 import pt.home.api.v1.model.PathologyDTO;
 import pt.home.api.v1.model.PatientDTO;
 import pt.home.controllers.v1.PatientController;
+import pt.home.repositories.PatientRepository;
 import pt.home.services.PatientService;
 import pt.home.services.ResourceNotFoundException;
 
@@ -36,6 +37,9 @@ public class PatientControllerTest {
     @Mock
     PatientService patientService;
 
+    @Mock
+    PatientRepository patientRepository;
+
     @InjectMocks
     PatientController patientController;
 
@@ -57,7 +61,7 @@ public class PatientControllerTest {
         PatientDTO patient1 = PatientDTO.builder().fullName("John Doe").patientUrl(PatientController.BASE_URL + "/1").build();
         PatientDTO patient2 = PatientDTO.builder().fullName("Jane Buck").patientUrl(PatientController.BASE_URL + "/2").build();
 
-        when(patientService.getAllPatients()).thenReturn(Arrays.asList(patient1, patient2));
+        when(patientService.getAllPatients(1L)).thenReturn(Arrays.asList(patient1, patient2));
 
         mockMvc.perform(get(PatientController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -83,8 +87,8 @@ public class PatientControllerTest {
     @Test
     public void testCreateNewPatient() throws Exception {
         //given
-        PatientDTO patient = PatientDTO.builder().fullName("John Doe").build();
-        PatientDTO returnDTO = PatientDTO.builder().fullName(patient.getFullName()).patientUrl(PatientController.BASE_URL + "/1").build();
+        PatientDTO patient = PatientDTO.builder().fullName("John Doe").email("email@email.com").phoneNumber("123456789").build();
+        PatientDTO returnDTO = PatientDTO.builder().fullName(patient.getFullName()).email("email@email.com").phoneNumber("123456789").patientUrl(PatientController.BASE_URL + "/1").build();
 
         when(patientService.createNewPatient(patient)).thenReturn(returnDTO);
 
@@ -100,7 +104,7 @@ public class PatientControllerTest {
     @Test
     public void testUpdatePatient() throws Exception {
         //given
-        PatientDTO patient = PatientDTO.builder().fullName("John Doe").build();
+        PatientDTO patient = PatientDTO.builder().fullName("John Doe").email("email@email.com").phoneNumber("123456789").build();
         PatientDTO returnDTO = PatientDTO.builder().fullName(patient.getFullName()).patientUrl(PatientController.BASE_URL + "/1").build();
 
         when(patientService.savePatientByDTO(anyLong(), any(PatientDTO.class))).thenReturn(returnDTO);

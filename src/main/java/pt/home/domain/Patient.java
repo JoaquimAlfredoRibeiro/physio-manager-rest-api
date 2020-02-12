@@ -21,6 +21,8 @@ public class Patient extends UserDateAudit {
 
     private String fullName;
     private Long phoneNumber;
+
+    @Column(unique = true)
     private String email;
     private String address;
 

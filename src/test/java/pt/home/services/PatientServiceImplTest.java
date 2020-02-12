@@ -44,7 +44,7 @@ public class PatientServiceImplTest {
         when(patientRepository.findAll()).thenReturn(patients);
 
         //when
-        List<PatientDTO> patientDTOS = patientService.getAllPatients();
+        List<PatientDTO> patientDTOS = patientService.getAllPatients(1L);
 
         //then
         assertEquals(3, patientDTOS.size());

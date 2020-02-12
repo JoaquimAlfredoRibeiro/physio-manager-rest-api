@@ -7,6 +7,7 @@ import pt.home.controllers.v1.PatientController;
 import pt.home.domain.Patient;
 import pt.home.repositories.PatientRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,14 +23,16 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<PatientDTO> getAllPatients() {
+    public List<PatientDTO> getAllPatients(Long id) {
         return patientRepository.findAll()
                 .stream()
+                .filter(patient -> patient.getCreatedBy().equals(id))
                 .map(patient -> {
                     PatientDTO patientDTO = patientMapper.patientToPatientDTO(patient);
                     patientDTO.setPatientUrl(getPatientUrl(patient.getId()));
                     return patientDTO;
                 })
+                .sorted(Comparator.comparing(PatientDTO::getFullName))
                 .collect(Collectors.toList());
     }
 
