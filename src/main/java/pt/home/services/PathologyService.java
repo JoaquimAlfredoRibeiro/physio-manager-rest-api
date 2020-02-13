@@ -9,4 +9,10 @@ public interface PathologyService {
     List<PathologyDTO> getAllPathologies();
 
     List<PathologyDTO> findByNameIgnoreCaseContaining(String name);
+
+    PathologyDTO createNewPathology(PathologyDTO pathologyDTO);
+
+    PathologyDTO savePathologyByDTO(Long id, PathologyDTO pathologyDTO);
+
+    void deletePathologyById(Long id);
 }

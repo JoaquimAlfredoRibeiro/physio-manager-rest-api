@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pt.home.domain.audit.DateAudit;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Pathology {
+public class Pathology extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
