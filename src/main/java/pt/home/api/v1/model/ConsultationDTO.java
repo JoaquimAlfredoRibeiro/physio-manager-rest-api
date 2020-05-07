@@ -17,10 +17,16 @@ public class ConsultationDTO {
 
     private Long id;
 
-    private LocalDateTime dateTime;
-    private String description;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private String location;
+    private String notes;
 
     @JsonIgnore
     private Patient patient;
+
+    private Long tempPatientId;
+
+    private String title;
 }
 

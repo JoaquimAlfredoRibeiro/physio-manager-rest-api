@@ -14,7 +14,7 @@ public class ConsultationMapperTest {
 
     //Constants
     public static final LocalDateTime DATE_TIME = LocalDateTime.of(2019, 11, 11, 10, 30);
-    public static final String DESCRIPTION = "Description";
+    public static final String LOCATION = "Location";
 
     ConsultationMapper consultationMapper = ConsultationMapper.INSTANCE;
 
@@ -22,7 +22,7 @@ public class ConsultationMapperTest {
     public void consultationToConsultationDTO() {
 
         //given
-        Consultation consultation = Consultation.builder().dateTime(DATE_TIME).description(DESCRIPTION).build();
+        Consultation consultation = Consultation.builder().startDate(DATE_TIME).location(LOCATION).build();
 
         Patient patient = Patient.builder().id(1L).fullName("John Doe").build();
         consultation.setPatient(patient);
@@ -31,8 +31,8 @@ public class ConsultationMapperTest {
         ConsultationDTO consultationDTO = consultationMapper.consultationToConsultationDTO(consultation);
 
         //then
-        assertEquals(DATE_TIME, consultationDTO.getDateTime());
-        assertEquals(DESCRIPTION, consultationDTO.getDescription());
+        assertEquals(DATE_TIME, consultationDTO.getStartDate());
+        assertEquals(LOCATION, consultationDTO.getLocation());
         assertEquals(patient, consultationDTO.getPatient());
     }
 
@@ -40,7 +40,7 @@ public class ConsultationMapperTest {
     public void consultationDTOToConsultation() {
 
         //given
-        ConsultationDTO consultationDTO = ConsultationDTO.builder().dateTime(DATE_TIME).description(DESCRIPTION).build();
+        ConsultationDTO consultationDTO = ConsultationDTO.builder().startDate(DATE_TIME).location(LOCATION).build();
 
         Patient patient = Patient.builder().id(1L).fullName("John Doe").build();
         consultationDTO.setPatient(patient);
@@ -49,8 +49,8 @@ public class ConsultationMapperTest {
         Consultation consultation = consultationMapper.consultationDTOToConsultation(consultationDTO);
 
         //then
-        assertEquals(DATE_TIME, consultation.getDateTime());
-        assertEquals(DESCRIPTION, consultation.getDescription());
+        assertEquals(DATE_TIME, consultation.getStartDate());
+        assertEquals(LOCATION, consultation.getLocation());
         assertEquals(patient, consultation.getPatient());
     }
 }

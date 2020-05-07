@@ -29,17 +29,25 @@ public class PatientServiceImplTest {
 
     PatientService patientService;
 
+    Patient p1 = new Patient().builder().id(1L).fullName("Full1").build();
+    Patient p2 = new Patient().builder().id(2L).fullName("Full3").build();
+    Patient p3 = new Patient().builder().id(2L).fullName("Full3").build();
+
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         patientService = new PatientServiceImpl(patientRepository, patientMapper);
+
+        p1.setCreatedBy(1L);
+        p2.setCreatedBy(1L);
+        p3.setCreatedBy(1L);
     }
 
     @Test
     public void getAllPatients() throws Exception {
         //given
-        List<Patient> patients = Arrays.asList(new Patient(), new Patient(), new Patient());
+        List<Patient> patients = Arrays.asList(p1, p2, p3);
 
         when(patientRepository.findAll()).thenReturn(patients);
 

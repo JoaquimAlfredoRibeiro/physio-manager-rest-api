@@ -31,16 +31,16 @@ public class PatientMapperTest {
     Pathology pathology2 = Pathology.builder().name("Pathology2").description("description2").build();
 
     //Consultations
-    Consultation consultation1 = Consultation.builder().dateTime(DATE_TIME_1).description("Consultation 1").build();
-    Consultation consultation2 = Consultation.builder().dateTime(DATE_TIME_2).description("Consultation 2").build();
+    Consultation consultation1 = Consultation.builder().startDate(DATE_TIME_1).location("Consultation 1").build();
+    Consultation consultation2 = Consultation.builder().startDate(DATE_TIME_2).location("Consultation 2").build();
 
     //PathologiesDTO
     PathologyDTO pathology1DTO = PathologyDTO.builder().name("Pathology1").description("description1").build();
     PathologyDTO pathology2DTO = PathologyDTO.builder().name("Pathology2").description("description2").build();
 
     //ConsultationsDTO
-    ConsultationDTO consultation1DTO = ConsultationDTO.builder().dateTime(DATE_TIME_1).description("Consultation 1").build();
-    ConsultationDTO consultation2DTO = ConsultationDTO.builder().dateTime(DATE_TIME_2).description("Consultation 2").build();
+    ConsultationDTO consultation1DTO = ConsultationDTO.builder().startDate(DATE_TIME_1).location("Location 1").build();
+    ConsultationDTO consultation2DTO = ConsultationDTO.builder().startDate(DATE_TIME_2).location("Location 2").build();
 
     PatientMapper patientMapper = PatientMapper.INSTANCE;
 

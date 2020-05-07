@@ -20,10 +20,14 @@ public class Consultation extends UserDateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime dateTime;
-    private String description;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private String location;
+    private String notes;
 
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
+    private Long tempPatientId;
 }

@@ -7,7 +7,13 @@ import java.util.List;
 
 public interface ConsultationService {
 
-    List<ConsultationDTO> getAllConsultations();
+    List<ConsultationDTO> getAllConsultations(Long id);
 
-    List<ConsultationDTO> getConsultationsByDate(LocalDateTime startDateTime, LocalDateTime endDateTime);
+    List<ConsultationDTO> getConsultationsByDate(Long id, LocalDateTime startDateTime, LocalDateTime endDateTime);
+
+    ConsultationDTO createNewConsultation(ConsultationDTO consultationDTO);
+
+    ConsultationDTO saveConsultationByDTO(Long id, ConsultationDTO consultationDTO);
+
+    void deleteConsultationById(Long id);
 }

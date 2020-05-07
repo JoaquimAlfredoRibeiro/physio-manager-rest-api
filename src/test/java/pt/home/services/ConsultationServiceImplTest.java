@@ -7,6 +7,7 @@ import org.mockito.MockitoAnnotations;
 import pt.home.api.v1.mapper.ConsultationMapper;
 import pt.home.api.v1.model.ConsultationDTO;
 import pt.home.domain.Consultation;
+import pt.home.domain.Patient;
 import pt.home.repositories.ConsultationRepository;
 
 import java.time.LocalDateTime;
@@ -20,29 +21,44 @@ public class ConsultationServiceImplTest {
 
     //Constants
     public static final LocalDateTime DATE_TIME_1 = LocalDateTime.of(2019, 11, 11, 10, 30);
-    public static final LocalDateTime DATE_TIME_2 = LocalDateTime.of(2019, 11, 12, 10, 30);
-    public static final LocalDateTime DATE_TIME_3 = LocalDateTime.of(2019, 11, 13, 10, 30);
+    public static final LocalDateTime DATE_TIME_2 = LocalDateTime.of(2019, 11, 11, 11, 30);
+    public static final LocalDateTime DATE_TIME_3 = LocalDateTime.of(2019, 11, 12, 10, 30);
+    public static final LocalDateTime DATE_TIME_4 = LocalDateTime.of(2019, 11, 12, 11, 30);
 
     ConsultationService consultationService;
 
     @Mock
     ConsultationRepository consultationRepository;
 
+
+    Consultation c1 = new Consultation();
+    Consultation c2 = new Consultation();
+    Consultation c3 = new Consultation();
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        consultationService = new ConsultationServiceImpl(consultationRepository, ConsultationMapper.INSTANCE);
+        consultationService = new ConsultationServiceImpl(consultationRepository, ConsultationMapper.INSTANCE, null, null);
+
+        Patient patient = Patient.builder().fullName("Full Name").build();
+
+        c1.setCreatedBy(1L);
+        c1.setPatient(patient);
+        c2.setCreatedBy(1L);
+        c2.setPatient(patient);
+        c3.setCreatedBy(1L);
+        c3.setPatient(patient);
     }
 
     @Test
     public void getAllConsultations() {
         //given
-        List<Consultation> consultations = Arrays.asList(new Consultation(), new Consultation(), new Consultation());
+        List<Consultation> consultations = Arrays.asList(c1, c2, c3);
         when(consultationRepository.findAll()).thenReturn(consultations);
 
         //when
-        List<ConsultationDTO> consultationDTOS = consultationService.getAllConsultations();
+        List<ConsultationDTO> consultationDTOS = consultationService.getAllConsultations(1L);
 
         //then
         assertEquals(3, consultationDTOS.size());
@@ -51,20 +67,23 @@ public class ConsultationServiceImplTest {
     @Test
     public void getConsultationsByDate() {
         //given
-        Consultation consultation1 = Consultation.builder().dateTime(DATE_TIME_1).build();
-        Consultation consultation2 = Consultation.builder().dateTime(DATE_TIME_2).build();
-        Consultation consultation3 = Consultation.builder().dateTime(DATE_TIME_3).build();
+        Patient patient = Patient.builder().fullName("Full Name").build();
+        Consultation consultation1 = Consultation.builder().startDate(DATE_TIME_1).endDate(DATE_TIME_2).patient(patient).build();
+        Consultation consultation2 = Consultation.builder().startDate(DATE_TIME_3).endDate(DATE_TIME_4).patient(patient).build();
 
-        List<Consultation> consultations = Arrays.asList(consultation1, consultation2, consultation3);
+        consultation1.setCreatedBy(1L);
+        consultation2.setCreatedBy(1L);
+
+        List<Consultation> consultations = Arrays.asList(consultation1, consultation2);
         when(consultationRepository.findAll()).thenReturn(consultations);
 
         //when
         List<ConsultationDTO> consultationDTOS = consultationService.
-                getConsultationsByDate(LocalDateTime.of(2019, 11, 12, 0, 0),
+                getConsultationsByDate(1L, LocalDateTime.of(2019, 11, 12, 0, 0),
                         LocalDateTime.of(2019, 11, 12, 23, 59));
 
         //then
         assertEquals(1, consultationDTOS.size());
-        assertEquals(DATE_TIME_2, consultationDTOS.get(0).getDateTime());
+        assertEquals(DATE_TIME_3, consultationDTOS.get(0).getStartDate());
     }
 }
