@@ -1,5 +1,6 @@
 package pt.home.services;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pt.home.api.v1.mapper.ConsultationMapper;
 import pt.home.api.v1.mapper.PatientMapper;
@@ -31,6 +32,7 @@ public class ConsultationServiceImpl implements ConsultationService {
     public List<ConsultationDTO> getAllConsultations(Long id) {
         return consultationRepository.findAll()
                 .stream()
+                .filter(consultation -> consultation.getActive())
                 .filter(patient -> patient.getCreatedBy().equals(id))
                 .map(consultationMapper::consultationToConsultationDTOForAppointments)
                 .collect(Collectors.toList());
@@ -40,6 +42,7 @@ public class ConsultationServiceImpl implements ConsultationService {
     public List<ConsultationDTO> getConsultationsByDate(Long id, ZonedDateTime startDateTime, ZonedDateTime endDateTime) {
         return this.getAllConsultations(id)
                 .stream()
+                .filter(consultation -> consultation.getActive())
                 .filter(consultationDTO -> consultationDTO.getStartDate().compareTo(startDateTime) > 0)
                 .filter(consultationDTO -> consultationDTO.getEndDate().compareTo(endDateTime) < 0)
                 .collect(Collectors.toList());
@@ -48,11 +51,11 @@ public class ConsultationServiceImpl implements ConsultationService {
 
     @Override
     public ConsultationDTO createNewConsultation(ConsultationDTO consultationDTO) {
+        consultationDTO.setActive(true);
         return saveAndReturnDTO(consultationMapper.consultationDTOToConsultation(consultationDTO));
     }
 
     private ConsultationDTO saveAndReturnDTO(Consultation consultation) {
-
         Patient patient = patientMapper.patientDTOToPatient(patientService.getPatientById(consultation.getTempPatientId()));
 
         consultation.setPatient(patient);
@@ -74,6 +77,11 @@ public class ConsultationServiceImpl implements ConsultationService {
 
     @Override
     public void deleteConsultationById(Long id) {
-        consultationRepository.deleteById(id);
+        Consultation consultation = consultationRepository.findById(id)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("Consultation not found by id : " + id)
+                );
+        consultation.setActive(false);
+        saveAndReturnDTO(consultation);
     }
 }

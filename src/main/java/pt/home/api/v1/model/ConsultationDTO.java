@@ -27,6 +27,7 @@ public class ConsultationDTO {
     private Patient patient;
 
     private Long tempPatientId;
+    private Boolean active;
 
     private String title;
 }
