@@ -8,7 +8,7 @@ import pt.home.domain.Consultation;
 import pt.home.domain.Patient;
 import pt.home.repositories.ConsultationRepository;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +37,7 @@ public class ConsultationServiceImpl implements ConsultationService {
     }
 
     @Override
-    public List<ConsultationDTO> getConsultationsByDate(Long id, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public List<ConsultationDTO> getConsultationsByDate(Long id, ZonedDateTime startDateTime, ZonedDateTime endDateTime) {
         return this.getAllConsultations(id)
                 .stream()
                 .filter(consultationDTO -> consultationDTO.getStartDate().compareTo(startDateTime) > 0)

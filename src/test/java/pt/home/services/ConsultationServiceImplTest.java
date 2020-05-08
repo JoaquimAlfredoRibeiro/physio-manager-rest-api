@@ -11,6 +11,8 @@ import pt.home.domain.Patient;
 import pt.home.repositories.ConsultationRepository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +26,14 @@ public class ConsultationServiceImplTest {
     public static final LocalDateTime DATE_TIME_2 = LocalDateTime.of(2019, 11, 11, 11, 30);
     public static final LocalDateTime DATE_TIME_3 = LocalDateTime.of(2019, 11, 12, 10, 30);
     public static final LocalDateTime DATE_TIME_4 = LocalDateTime.of(2019, 11, 12, 11, 30);
+    public static final LocalDateTime DATE_TIME_5 = LocalDateTime.of(2019, 11, 12, 0, 0);
+    public static final LocalDateTime DATE_TIME_6 = LocalDateTime.of(2019, 11, 12, 23, 59);
+    public static final ZonedDateTime LOCAL_DATE_TIME_1 = DATE_TIME_1.atZone(ZoneId.of("Europe/Lisbon"));
+    public static final ZonedDateTime LOCAL_DATE_TIME_2 = DATE_TIME_2.atZone(ZoneId.of("Europe/Lisbon"));
+    public static final ZonedDateTime LOCAL_DATE_TIME_3 = DATE_TIME_3.atZone(ZoneId.of("Europe/Lisbon"));
+    public static final ZonedDateTime LOCAL_DATE_TIME_4 = DATE_TIME_4.atZone(ZoneId.of("Europe/Lisbon"));
+    public static final ZonedDateTime LOCAL_DATE_TIME_5 = DATE_TIME_5.atZone(ZoneId.of("Europe/Lisbon"));
+    public static final ZonedDateTime LOCAL_DATE_TIME_6 = DATE_TIME_6.atZone(ZoneId.of("Europe/Lisbon"));
 
     ConsultationService consultationService;
 
@@ -68,8 +78,8 @@ public class ConsultationServiceImplTest {
     public void getConsultationsByDate() {
         //given
         Patient patient = Patient.builder().fullName("Full Name").build();
-        Consultation consultation1 = Consultation.builder().startDate(DATE_TIME_1).endDate(DATE_TIME_2).patient(patient).build();
-        Consultation consultation2 = Consultation.builder().startDate(DATE_TIME_3).endDate(DATE_TIME_4).patient(patient).build();
+        Consultation consultation1 = Consultation.builder().startDate(LOCAL_DATE_TIME_1).endDate(LOCAL_DATE_TIME_2).patient(patient).build();
+        Consultation consultation2 = Consultation.builder().startDate(LOCAL_DATE_TIME_3).endDate(LOCAL_DATE_TIME_4).patient(patient).build();
 
         consultation1.setCreatedBy(1L);
         consultation2.setCreatedBy(1L);
@@ -79,11 +89,11 @@ public class ConsultationServiceImplTest {
 
         //when
         List<ConsultationDTO> consultationDTOS = consultationService.
-                getConsultationsByDate(1L, LocalDateTime.of(2019, 11, 12, 0, 0),
-                        LocalDateTime.of(2019, 11, 12, 23, 59));
+                getConsultationsByDate(1L, LOCAL_DATE_TIME_5,
+                        LOCAL_DATE_TIME_6);
 
         //then
         assertEquals(1, consultationDTOS.size());
-        assertEquals(DATE_TIME_3, consultationDTOS.get(0).getStartDate());
+        assertEquals(LOCAL_DATE_TIME_3, consultationDTOS.get(0).getStartDate());
     }
 }

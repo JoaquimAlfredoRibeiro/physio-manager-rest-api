@@ -15,7 +15,7 @@ import pt.home.api.v1.model.ConsultationDTO;
 import pt.home.controllers.v1.ConsultationController;
 import pt.home.services.ConsultationService;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,21 +69,20 @@ public class ConsultationControllerTest {
     @Test
     public void testGetConsultationsByDate() throws Exception {
 
-        //TODO - add testing with mock USER
-
         //given
         ConsultationDTO consultationDTO1 = ConsultationDTO.builder().id(1L).location("Location 1").build();
         ConsultationDTO consultationDTO2 = ConsultationDTO.builder().id(1L).location("Location 2").build();
         List<ConsultationDTO> consultationDTOs = Arrays.asList(consultationDTO1, consultationDTO2);
 
-        when(consultationService.getConsultationsByDate(any(Long.class), any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(consultationDTOs);
+        when(consultationService.getConsultationsByDate(any(Long.class), any(ZonedDateTime.class), any(ZonedDateTime.class))).thenReturn(consultationDTOs);
 
         //then
-        MvcResult asd = mockMvc.perform(get(ConsultationController.BASE_URL + "/20191111/20191112")
+        MvcResult result = (MvcResult) mockMvc.perform(get(ConsultationController.BASE_URL + "/20191111/20191112")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.consultations", hasSize(2)))
                 .andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
 
     }
 
@@ -93,7 +92,7 @@ public class ConsultationControllerTest {
         //given
         List<ConsultationDTO> consultationDTOs = new ArrayList<>();
 
-        when(consultationService.getConsultationsByDate(any(Long.class), any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(consultationDTOs);
+        when(consultationService.getConsultationsByDate(any(Long.class), any(ZonedDateTime.class), any(ZonedDateTime.class))).thenReturn(consultationDTOs);
 
         //then
         mockMvc.perform(get(ConsultationController.BASE_URL + "/20191111/20191112")

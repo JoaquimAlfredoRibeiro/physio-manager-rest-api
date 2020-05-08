@@ -17,6 +17,8 @@ import pt.home.services.PatientService;
 import pt.home.services.ResourceNotFoundException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,6 +47,13 @@ public class PatientControllerTest {
 
     MockMvc mockMvc;
 
+    LocalDateTime DATE_TIME_1 = LocalDateTime.of(2019, 11, 11, 10, 30);
+    LocalDateTime DATE_TIME_2 = LocalDateTime.of(2019, 12, 12, 12, 00);
+    ZonedDateTime LOCAL_DATE_TIME_1 = DATE_TIME_1.atZone(ZoneId.of("Europe/Lisbon"));
+    ;
+    ZonedDateTime LOCAL_DATE_TIME_2 = DATE_TIME_2.atZone(ZoneId.of("Europe/Lisbon"));
+    ;
+
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -55,10 +64,7 @@ public class PatientControllerTest {
     }
 
     @Test
-//    @WithMockUser
     public void testGetAllPatients() throws Exception {
-
-        //TODO - add testing with mock USER
 
         //given
         PatientDTO patient1 = PatientDTO.builder().id(1L).fullName("John Doe").patientUrl(PatientController.BASE_URL + "/1").build();
@@ -69,7 +75,6 @@ public class PatientControllerTest {
         mockMvc.perform(get(PatientController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-//                .andExpect(jsonPath("$.patients", hasSize(2)));
     }
 
     @Test
@@ -147,12 +152,12 @@ public class PatientControllerTest {
         Set<ConsultationDTO> consultation = new HashSet<>();
         consultation.add(ConsultationDTO.builder()
                 .id(1L)
-                .startDate(LocalDateTime.of(2019, 11, 10, 10, 30))
+                .startDate(LOCAL_DATE_TIME_1)
                 .location("Diagnosis Consultation")
                 .build());
         consultation.add(ConsultationDTO.builder()
                 .id(2L)
-                .startDate(LocalDateTime.of(2019, 11, 11, 11, 30))
+                .startDate(LOCAL_DATE_TIME_2)
                 .location("Follow-up Consultation")
                 .build());
 

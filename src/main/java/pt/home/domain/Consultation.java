@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import pt.home.domain.audit.UserDateAudit;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Data
 @Entity
@@ -20,8 +20,12 @@ public class Consultation extends UserDateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private ZonedDateTime startDate;
+    private ZonedDateTime endDate;
+    //    private String startDate;
+//    private String endDate;
+//    private LocalDateTime startDate;
+//    private LocalDateTime endDate;
     private String location;
     private String notes;
 

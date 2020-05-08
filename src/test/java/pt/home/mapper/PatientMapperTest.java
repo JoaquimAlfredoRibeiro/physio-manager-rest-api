@@ -10,6 +10,8 @@ import pt.home.domain.Pathology;
 import pt.home.domain.Patient;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,22 +27,27 @@ public class PatientMapperTest {
     public static final String PHONE_NUMBER_STRING = "123456789";
     public static final LocalDateTime DATE_TIME_1 = LocalDateTime.of(2019, 11, 11, 10, 30);
     public static final LocalDateTime DATE_TIME_2 = LocalDateTime.of(2019, 12, 12, 12, 00);
+    public static final ZonedDateTime LOCAL_DATE_TIME_1 = DATE_TIME_1.atZone(ZoneId.of("Europe/Lisbon"));
+    ;
+    public static final ZonedDateTime LOCAL_DATE_TIME_2 = DATE_TIME_2.atZone(ZoneId.of("Europe/Lisbon"));
+    ;
+
 
     //Pathologies
     Pathology pathology1 = Pathology.builder().name("Pathology1").description("description1").build();
     Pathology pathology2 = Pathology.builder().name("Pathology2").description("description2").build();
 
     //Consultations
-    Consultation consultation1 = Consultation.builder().startDate(DATE_TIME_1).location("Consultation 1").build();
-    Consultation consultation2 = Consultation.builder().startDate(DATE_TIME_2).location("Consultation 2").build();
+    Consultation consultation1 = Consultation.builder().startDate(LOCAL_DATE_TIME_1).location("Consultation 1").build();
+    Consultation consultation2 = Consultation.builder().startDate(LOCAL_DATE_TIME_2).location("Consultation 2").build();
 
     //PathologiesDTO
     PathologyDTO pathology1DTO = PathologyDTO.builder().name("Pathology1").description("description1").build();
     PathologyDTO pathology2DTO = PathologyDTO.builder().name("Pathology2").description("description2").build();
 
     //ConsultationsDTO
-    ConsultationDTO consultation1DTO = ConsultationDTO.builder().startDate(DATE_TIME_1).location("Location 1").build();
-    ConsultationDTO consultation2DTO = ConsultationDTO.builder().startDate(DATE_TIME_2).location("Location 2").build();
+    ConsultationDTO consultation1DTO = ConsultationDTO.builder().startDate(LOCAL_DATE_TIME_1).location("Location 1").build();
+    ConsultationDTO consultation2DTO = ConsultationDTO.builder().startDate(LOCAL_DATE_TIME_2).location("Location 2").build();
 
     PatientMapper patientMapper = PatientMapper.INSTANCE;
 

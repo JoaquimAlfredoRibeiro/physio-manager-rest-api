@@ -11,8 +11,8 @@ import pt.home.security.UserPrincipal;
 import pt.home.services.ConsultationService;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @RestController
@@ -38,8 +38,10 @@ public class ConsultationController {
     public ConsultationListDTO getConsultationsByDate(@CurrentUser UserPrincipal currentUser, @PathVariable("startDate") @DateTimeFormat(pattern = "yyyyMMdd") Date startDate, @PathVariable("endDate") @DateTimeFormat(pattern = "yyyyMMdd") Date endDate) {
 
         return new ConsultationListDTO(
-                consultationService.getConsultationsByDate(currentUser.getId(), LocalDateTime.ofInstant(startDate.toInstant(), ZoneId.systemDefault()),
-                        LocalDateTime.ofInstant(endDate.toInstant(), ZoneId.systemDefault())));
+                consultationService.getConsultationsByDate(currentUser.getId(),
+                        ZonedDateTime.ofInstant(startDate.toInstant(), ZoneId.systemDefault()),
+                        ZonedDateTime.ofInstant(endDate.toInstant(), ZoneId.systemDefault()))
+        );
     }
 
     @PostMapping
