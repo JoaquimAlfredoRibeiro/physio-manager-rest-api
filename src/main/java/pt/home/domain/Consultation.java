@@ -22,10 +22,7 @@ public class Consultation extends UserDateAudit {
 
     private ZonedDateTime startDate;
     private ZonedDateTime endDate;
-    //    private String startDate;
-//    private String endDate;
-//    private LocalDateTime startDate;
-//    private LocalDateTime endDate;
+
     private String location;
     private String notes;
 
@@ -34,4 +31,5 @@ public class Consultation extends UserDateAudit {
     private Patient patient;
 
     private Long tempPatientId;
+    private Boolean active;
 }
