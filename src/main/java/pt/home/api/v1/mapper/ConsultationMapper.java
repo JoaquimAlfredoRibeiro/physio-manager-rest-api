@@ -29,6 +29,7 @@ public interface ConsultationMapper {
         consultationDTO.setPatient(consultation.getPatient());
         consultationDTO.setTempPatientId(consultation.getTempPatientId());
         consultationDTO.setTitle(consultation.getPatient().getFullName());
+        consultationDTO.setActive(consultation.getActive());
 
         return consultationDTO;
     }
